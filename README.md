@@ -92,30 +92,3 @@ Untuk memublikasikan repositori, tinjau izin penggunaan data terlebih dahulu: da
 | `heatmap_correlation_data600_en.png` | Heatmap yang sama dengan label Bahasa Inggris. Dua kategori dari satu variabel dapat tampil sebagai baris berbeda setelah *one-hot encoding*. |
 | `shap_beeswarm_data600_id.png` | Sebaran kontribusi SHAP tiap fitur pada data uji, berlabel Bahasa Indonesia. Setiap titik mewakili satu observasi; posisi horizontal menunjukkan arah dan besar kontribusi, warna menunjukkan nilai fitur (merah tinggi, biru rendah). |
 | `shap_beeswarm_data600_en.png` | Grafik SHAP yang sama dengan label Bahasa Inggris. Peringkat fitur menggambarkan pengaruh pada prediksi model, bukan bukti kausal. |
-
-**Perhatikan versi gambar.** Nama file pada `result/` cocok dengan sebagian nama yang akan dibuat script, tetapi beberapa judul gambar menunjukkan *“WAZ Model”* dan confusion matrix yang ada berjudul *“F1-optimal threshold”*. Kode `script/XGBoost.py` saat ini memberi judul *“XGBoost Fixed Model”* dan membuat confusion matrix dengan ambang **balanced-accuracy-optimal**. Karena itu, perlakukan PNG di `result/` sebagai hasil yang sudah tersimpan, bukan bukti bahwa script saat ini telah dijalankan pada dataset saat ini. Bandingkan angka dengan `metrics_data600.json` dari satu eksekusi yang sama sebelum melaporkan hasil.
-
-## Artefak tambahan yang dibuat script
-
-Setelah path diperbaiki dan script selesai berjalan, `output_data600_fixed_xgboost/` dapat berisi file berikut. Berbeda dari delapan PNG di atas, file ini **belum ada** di folder `result/` yang diperiksa.
-
-| Kelompok file | Makna |
-| --- | --- |
-| `cross_validation_metrics_data600.csv`, `cross_validation_fold_metrics_data600.csv` | Ringkasan mean/std enam metrik nested CV dan skor masing-masing outer fold. Versi PNG menyajikan tabel ringkasnya. |
-| `risk_factor_scenario_cv_metrics_data600.csv`, `risk_factor_scenario_cv_folds_data600.csv` | Ringkasan dan skor fold skenario tanpa WAZ/berat badan anak; dibuat jika `RUN_RISK_FACTOR_SCENARIO=True`. |
-| `selected_features_data600.csv`, `dropped_columns_data600.csv` | Fitur mentah yang masuk pipeline final beserta pengkodeannya, serta fitur yang dibuang dan alasannya. |
-| `target_distribution_data600.png` | Banyaknya observasi Normal dan Stunting dalam seluruh dataset yang dimuat. |
-| `top_8_correlation_features_data600.csv`, `heatmap_correlation_data600.png`, `heatmap_correlation_data600_id.png`, `heatmap_correlation_data600_en.png` | Delapan fitur hasil transformasi dengan korelasi absolut tertinggi terhadap target pada data latih dan heatmap dalam tiga versi label. |
-| `roc_curve_data600.png`, `precision_recall_curve_data600.png`, `confusion_matrix_data600.png` | Grafik evaluasi data uji dari satu eksekusi kode saat ini; confusion matrix memakai ambang *balanced accuracy* hasil tuning. |
-| `shap_feature_importance_data600.csv`, `shap_selected_features_data600.csv`, `shap_beeswarm_data600.png`, `shap_beeswarm_data600_id.png`, `shap_beeswarm_data600_en.png` | Rincian mean absolut SHAP setiap fitur hasil transformasi, satu representasi untuk tiap fitur mentah terpilih, dan beeswarm data uji. |
-| `top_8_frontend_features_data600.csv`, `frontend_feature_schema_data600.json` | Peringkat fitur mentah dan skema input/label untuk frontend. |
-| `subgroup_performance_shap_data600.csv`, `subgroup_performance_shap_data600.png` | Ukuran subkelompok dan metrik model per kelompok dari fitur SHAP terpilih pada data uji. AUC kosong bila subkelompok hanya memiliki satu kelas. |
-| `metrics_data600.json`, `model_metadata_data600.json` | Metrik akhir, ambang, confusion matrix, parameter, hasil CV, serta metadata lingkungan dan fitur. Rujukan utama saat melaporkan angka evaluasi. |
-| `stunting_prediction_pipeline_data600.pkl` | Pipeline terlatih yang mencakup pembersih, praproses, dan model XGBoost. |
-| `stunting_frontend_bundle_data600.pkl`, `stunting_model_8_features_data600.pkl` | Dua nama file untuk bundle frontend yang sama: pipeline, kontrak fitur, nilai default, dan metadata dashboard. Muat hanya dari sumber tepercaya karena file `joblib`/pickle dapat menjalankan kode saat dibuka. |
-| `xgboost_feature_importance_data600.csv` | *Feature importance* bawaan XGBoost untuk fitur hasil transformasi; definisinya berbeda dari mean absolut SHAP. |
-| `output_summary_data600.csv` | Daftar file keluaran yang ditemukan setelah eksekusi beserta status keberadaannya. |
-
-File `top_10_correlation_features_data600.csv` dan `top_10_frontend_features_data600.csv` adalah nama lama yang tetap disimpan untuk kompatibilitas. Isinya sekarang berdasarkan **delapan** fitur, bukan sepuluh. `table_2_performance_xgboost_shap_id_data600.csv` dan `.png` adalah salinan bernama lain dari hasil subkelompok. Nama `xgboost_feature_importance_data600.csv` ditulis dua kali oleh script untuk kompatibilitas, dengan isi analisis yang sama.
-
-Saat membandingkan hasil, gunakan file dari **satu eksekusi yang sama**. Delapan grafik lama di `result/` tidak mencakup seluruh artefak yang dibuat script saat ini.
